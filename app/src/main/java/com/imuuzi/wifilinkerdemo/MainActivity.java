@@ -1,5 +1,6 @@
 package com.imuuzi.wifilinkerdemo;
 
+import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,8 +10,11 @@ import android.widget.TextView;
 
 import com.kongzue.wifilinker.WifiUtil;
 import com.kongzue.wifilinker.interfaces.OnWifiConnectStatusChangeListener;
+import com.kongzue.wifilinker.interfaces.OnWifiScanListener;
 import com.kongzue.wifilinker.util.WifiAutoConnectManager;
 import com.kongzue.wifilinker.util.WifiInfo;
+
+import java.util.List;
 
 import static com.kongzue.wifilinker.WifiUtil.CONNECT_FINISH;
 import static com.kongzue.wifilinker.WifiUtil.DISCONNECTED;

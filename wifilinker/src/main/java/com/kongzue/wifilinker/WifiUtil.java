@@ -239,6 +239,13 @@ public class WifiUtil {
         mWorkAsyncTask.execute();
     }
     
+    public void stopScan(){
+        if (mWorkAsyncTask != null) {
+            mWorkAsyncTask.cancel(true);
+            mWorkAsyncTask = null;
+        }
+    }
+    
     /**
      * 获取wifi列表
      */
