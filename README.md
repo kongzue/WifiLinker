@@ -184,6 +184,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
+核心方法感谢 @lakebobo 的开源贡献：https://blog.csdn.net/lakebobo/article/details/79581211
+
 ## 更新日志
 v1.0.0：
 - 首次上传；
