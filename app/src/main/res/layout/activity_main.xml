@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="输入要连接的Wifi名称和密码" />
+
+    <EditText
+        android:id="@+id/edit_ssid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入Wifi名称（SSID）"/>
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入Wifi密码（无密码请忽略）"/>
+
+    <Button
+        android:id="@+id/btn_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="连接"/>
+
+    <Button
+        android:id="@+id/btn_broken"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="断开"/>
+
+    <TextView
+        android:id="@+id/txt_log"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
