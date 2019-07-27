@@ -62,6 +62,8 @@ Manifest.permission.ACCESS_FINE_LOCATION
 
 ![MIUI权限](https://github.com/kongzue/Res/raw/master/app/src/main/res/mipmap-xxxhdpi/img_wifilinker_miui_tip.png)
 
+### 开始使用
+
 创建 wifiUtil 对象：
 ```
 wifiUtil = new WifiUtil(this);
