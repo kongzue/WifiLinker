@@ -2,10 +2,10 @@
 Wifi连接封装库，适用于智能硬件Wifi通讯。
 
 <a href="https://github.com/kongzue/WifiLinker/">
-<img src="https://img.shields.io/badge/WifiLinker-1.0.0-green.svg" alt="Kongzue WifiLinker">
+<img src="https://img.shields.io/badge/WifiLinker-1.0.1-green.svg" alt="Kongzue WifiLinker">
 </a>
 <a href="https://bintray.com/myzchh/maven/WifiLinker">
-<img src="https://img.shields.io/badge/Maven-1.0.0-blue.svg" alt="Maven">
+<img src="https://img.shields.io/badge/Maven-1.0.1-blue.svg" alt="Maven">
 </a>
 <a href="http://www.apache.org/licenses/LICENSE-2.0">
 <img src="https://img.shields.io/badge/License-Apache%202.0-red.svg" alt="License">
@@ -27,14 +27,14 @@ Maven仓库：
 <dependency>
   <groupId>com.kongzue.smart</groupId>
   <artifactId>wifilinker</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 ```
 Gradle：
 在dependencies{}中添加引用：
 ```
-implementation 'com.kongzue.smart:wifilinker:1.0.0'
+implementation 'com.kongzue.smart:wifilinker:1.0.1'
 ```
 
 ## 关于权限
@@ -151,6 +151,17 @@ wifiUtil.link(ssid, password, WifiAutoConnectManager.WifiCipherType.WIFICIPHER_W
 );
 ```
 
+返回值中，isSuccess 代表是否成功连接，statusCode 表示了所处的状态，状态值对应含义如下：
+```
+ERROR_DEVICE_NOT_HAVE_WIFI = -1;    //设备无Wifi模块
+ERROR_CONNECT = -2;                 //连接失败
+ERROR_CONNECT_SYS_EXISTS_SAME_CONFIG = -3;                 //连接失败：系统已存在相同Wifi配置（需手动删除已存储连接）
+ERROR_PASSWORD = -11;               //密码错误
+CONNECT_START = 1;                  //开始连接
+CONNECT_FINISH = 2;                 //已连接
+DISCONNECTED = 3;                   //已断开连接
+```
+
 额外方法：
 ```
 //断开连接
@@ -187,5 +198,9 @@ limitations under the License.
 核心方法感谢 @lakebobo 的开源贡献：https://blog.csdn.net/lakebobo/article/details/79581211
 
 ## 更新日志
+v1.0.1：
+- 增加了 stopScan() 方法；
+- 增加 CONNECT_START 状态；
+
 v1.0.0：
 - 首次上传；

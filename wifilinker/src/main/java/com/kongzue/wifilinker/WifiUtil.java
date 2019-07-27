@@ -42,8 +42,9 @@ public class WifiUtil {
     public static final int ERROR_CONNECT_SYS_EXISTS_SAME_CONFIG = -3;                 //连接失败：系统已存在相同Wifi配置（需手动删除已存储连接）
     public static final int ERROR_PASSWORD = -11;               //密码错误
     
-    public static final int CONNECT_FINISH = 1;                 //已连接
-    public static final int DISCONNECTED = 2;                   //已断开连接
+    public static final int CONNECT_START = 1;                  //开始连接
+    public static final int CONNECT_FINISH = 2;                 //已连接
+    public static final int DISCONNECTED = 3;                   //已断开连接
     
     private boolean isLinked = false;
     
@@ -175,7 +176,9 @@ public class WifiUtil {
             context.unregisterReceiver(mWifiSearchBroadcastReceiver);
             context.unregisterReceiver(mWifiConnectBroadcastReceiver);
         } catch (Exception e) {
-            e.printStackTrace();
+            if (DEBUGMODE) {
+                e.printStackTrace();
+            }
         }
     }
     
@@ -239,7 +242,7 @@ public class WifiUtil {
         mWorkAsyncTask.execute();
     }
     
-    public void stopScan(){
+    public void stopScan() {
         if (mWorkAsyncTask != null) {
             mWorkAsyncTask.cancel(true);
             mWorkAsyncTask = null;
@@ -310,6 +313,9 @@ public class WifiUtil {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (onWifiConnectStatusChangeListener != null) {
+                onWifiConnectStatusChangeListener.onStatusChange(false, CONNECT_START);
+            }
             log("开始连接");
         }
         
@@ -398,13 +404,13 @@ public class WifiUtil {
         }
     }
     
-    public void disconnect(){
+    public void disconnect() {
         WifiConfiguration tempConfig = mWifiAutoConnectManager.isExsits(ssid);
         if (tempConfig != null) {
             mWifiAutoConnectManager.wifiManager.removeNetwork(tempConfig.networkId);
             mWifiAutoConnectManager.wifiManager.saveConfiguration();
         }
-    
+        
         for (WifiConfiguration c : mWifiAutoConnectManager.wifiManager.getConfiguredNetworks()) {
             mWifiAutoConnectManager.wifiManager.disableNetwork(c.networkId);
         }
