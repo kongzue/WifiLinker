@@ -56,11 +56,11 @@ Manifest.permission.ACCESS_COARSE_LOCATION,
 Manifest.permission.ACCESS_FINE_LOCATION
 ```
 
+若不声明或申请权限，可能导致无法查找到要连接的目标设备，或无法正常使用功能。
+
 在最新版本的 MIUI 中，因小米私加 WIFI 开关权限导致使用过程中可能出现不停弹出“是否允许程序开关 WIFI”的提示框，而该权限属于私有权限未找到申请方法，请进入软件设置界面手动开启权限：
 
 ![MIUI权限](https://github.com/kongzue/Res/raw/master/app/src/main/res/mipmap-xxxhdpi/img_wifilinker_miui_tip.png)
-
-若不声明或申请权限，可能导致无法查找到要连接的目标设备，或无法正常使用功能。
 
 创建 wifiUtil 对象：
 ```
