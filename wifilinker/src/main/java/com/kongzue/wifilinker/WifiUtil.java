@@ -125,23 +125,28 @@ public class WifiUtil {
         context.registerReceiver(mWifiConnectBroadcastReceiver, mWifiConnectIntentFilter);
     }
     
+    private boolean isConnected = false;
+    
     private void setWifiState(NetworkInfo.DetailedState state) {
         if (state == NetworkInfo.DetailedState.AUTHENTICATING) {
             log("认证中");
         } else if (state == NetworkInfo.DetailedState.BLOCKED) {
             log("阻塞");
         } else if (state == NetworkInfo.DetailedState.CONNECTED) {
-            isLinked = true;
             log("连接成功");
-            if (onWifiConnectStatusChangeListener != null) {
-                onWifiConnectStatusChangeListener.onStatusChange(true, CONNECT_FINISH);
-                onWifiConnectStatusChangeListener.onConnect(new WifiInfo(
-                        WifiAutoConnectManager.getSSID(),
-                        WifiAutoConnectManager.getIpAddress(),
-                        WifiAutoConnectManager.getMacAddress(),
-                        WifiAutoConnectManager.getGateway()
-                ));
+            if (!isConnected) {
+                if (onWifiConnectStatusChangeListener != null) {
+                    onWifiConnectStatusChangeListener.onStatusChange(true, CONNECT_FINISH);
+                    onWifiConnectStatusChangeListener.onConnect(new WifiInfo(
+                            WifiAutoConnectManager.getSSID(),
+                            WifiAutoConnectManager.getIpAddress(),
+                            WifiAutoConnectManager.getMacAddress(),
+                            WifiAutoConnectManager.getGateway()
+                    ));
+                }
+                isConnected = true;
             }
+            isLinked = true;
         } else if (state == NetworkInfo.DetailedState.CONNECTING) {
             isLinked = false;
             log("连接中: " + WifiAutoConnectManager.getSSID());
@@ -188,6 +193,7 @@ public class WifiUtil {
     private String password;
     
     public void link(String ssid, String password, OnWifiConnectStatusChangeListener listener) {
+        isConnected = false;
         if (mScanResultList.isEmpty()) {
             error("此连接方式需要先进行查找");
             return;
@@ -213,6 +219,7 @@ public class WifiUtil {
     private ConnectAsyncTask mConnectAsyncTask = null;
     
     public void link(String ssid, String password, WifiAutoConnectManager.WifiCipherType wifiCipherType, OnWifiConnectStatusChangeListener listener) {
+        isConnected = false;
         this.ssid = ssid;
         this.password = password;
         type = wifiCipherType;

@@ -3,10 +3,12 @@ package com.imuuzi.wifilinkerdemo;
 import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kongzue.wifilinker.WifiUtil;
 import com.kongzue.wifilinker.interfaces.OnWifiConnectStatusChangeListener;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     
                             @Override
                             public void onConnect(WifiInfo wifiInfo) {
-                            
+                                Log.d(">>>", "onConnect: " + wifiInfo);
                             }
                         }
                 );

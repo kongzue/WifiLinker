@@ -2,10 +2,10 @@
 Wifi连接封装库，适用于智能硬件Wifi通讯。
 
 <a href="https://github.com/kongzue/WifiLinker/">
-<img src="https://img.shields.io/badge/WifiLinker-1.0.1-green.svg" alt="Kongzue WifiLinker">
+<img src="https://img.shields.io/badge/WifiLinker-1.0.2-green.svg" alt="Kongzue WifiLinker">
 </a>
 <a href="https://bintray.com/myzchh/maven/WifiLinker">
-<img src="https://img.shields.io/badge/Maven-1.0.1-blue.svg" alt="Maven">
+<img src="https://img.shields.io/badge/Maven-1.0.2-blue.svg" alt="Maven">
 </a>
 <a href="http://www.apache.org/licenses/LICENSE-2.0">
 <img src="https://img.shields.io/badge/License-Apache%202.0-red.svg" alt="License">
@@ -27,14 +27,14 @@ Maven仓库：
 <dependency>
   <groupId>com.kongzue.smart</groupId>
   <artifactId>wifilinker</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <type>pom</type>
 </dependency>
 ```
 Gradle：
 在dependencies{}中添加引用：
 ```
-implementation 'com.kongzue.smart:wifilinker:1.0.1'
+implementation 'com.kongzue.smart:wifilinker:1.0.2'
 ```
 
 ## 关于权限
@@ -61,6 +61,8 @@ Manifest.permission.ACCESS_FINE_LOCATION
 在最新版本的 MIUI 中，因小米私加 WIFI 开关权限导致使用过程中可能出现不停弹出“是否允许程序开关 WIFI”的提示框，而该权限属于私有权限未找到申请方法，请进入软件设置界面手动开启权限：
 
 ![MIUI权限](https://github.com/kongzue/Res/raw/master/app/src/main/res/mipmap-xxxhdpi/img_wifilinker_miui_tip.png)
+
+另外请注意，已知在部分设备上，OnWifiConnectStatusChangeListener.onConnect 中返回的已连接 WifiInfo 中 SSID 值为“unknow ssid”系系统策略，并非本库的问题。
 
 ### 开始使用
 
@@ -204,6 +206,9 @@ limitations under the License.
 核心方法感谢 @lakebobo 的开源贡献：https://blog.csdn.net/lakebobo/article/details/79581211
 
 ## 更新日志
+v1.0.2：
+- 修复了 OnWifiConnectStatusChangeListener.onConnect 被多次调用的问题；
+
 v1.0.1：
 - 增加了 stopScan() 方法；
 - 增加 CONNECT_START 状态；
