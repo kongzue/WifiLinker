@@ -124,19 +124,6 @@ wifiUtil.link(ssid, password, new OnWifiConnectStatusChangeListener() {
     }
 });
 ```
-⚠ 警告！此处请勿以 statusCode 状态为主进行判断，因为这个吃的是系统广播回调，不准，要知道连不连成功的判断方法是检查 onConnect 有没有执行。
-
-另外我们注意到某些设备在附近没有要连接的 Wifi 的情况下，会主动重新连接之前连接的 Wifi，此时也会走 CONNECT_FINISH 回调，同时 onConnect 也会执行，这种问题的解决方法是判断：
-```
-@Override
-public void onConnect(WifiInfo wifiInfo) {
-    //连接完成后获取 Wifi 信息
-    if (wifiInfo.getName().contains(你连接的Wifi的SSID)){      //用contains方法判断的原因是wifiInfo.getName()可能是加了引号的WifiSSID
-        //差不多是真的连接成功了
-    }
-}
-```
-因部分设备限制，wifiInfo.getName() 获取的值可能是 “unknow ssid”这个问题已经在新版本中解决了，方案是通过 networkId 去已存储的Wifi信息列表中找到对应的 Wifi 信息获取其 SSID 是正确的 SSID。
 
 对于已知类型的 Wifi，使用以下连接方式：
 ```
@@ -199,6 +186,20 @@ protected void onDestroy() {
     super.onDestroy();
 }
 ```
+
+⚠ 警告！此处请勿以 statusCode 状态为主进行判断，因为这个吃的是系统广播回调，不准，要知道连不连成功的判断方法是检查 onConnect 有没有执行。
+
+另外我们注意到某些设备在附近没有要连接的 Wifi 的情况下，会主动重新连接之前连接的 Wifi，此时也会走 CONNECT_FINISH 回调，同时 onConnect 也会执行，这种问题的解决方法是判断：
+```
+@Override
+public void onConnect(WifiInfo wifiInfo) {
+    //连接完成后获取 Wifi 信息
+    if (wifiInfo.getName().contains(你连接的Wifi的SSID)){      //用contains方法判断的原因是wifiInfo.getName()可能是加了引号的WifiSSID
+        //差不多是真的连接成功了
+    }
+}
+```
+因部分设备限制，wifiInfo.getName() 获取的值可能是 “unknow ssid”这个问题已经在新版本中解决了，方案是通过 networkId 去已存储的Wifi信息列表中找到对应的 Wifi 信息获取其 SSID 是正确的 SSID。
 
 ## 开源协议
 ```
