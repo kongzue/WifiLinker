@@ -221,6 +221,9 @@ limitations under the License.
 核心方法感谢 @lakebobo 的开源贡献：https://blog.csdn.net/lakebobo/article/details/79581211
 
 ## 更新日志
+v1.0.3：
+- 解决连接 Wifi 成功状态判断问题；
+
 v1.0.2：
 - 修复了 OnWifiConnectStatusChangeListener.onConnect 被多次调用的问题；
 
