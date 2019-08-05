@@ -187,7 +187,7 @@ protected void onDestroy() {
 }
 ```
 
-⚠ 警告！此处请勿以 statusCode 状态为主进行判断，因为这个吃的是系统广播回调，不准，要知道连不连成功的判断方法是检查 onConnect 有没有执行。
+⚠ 警告！请勿以 statusCode 状态为主进行判断，因为这个吃的是系统广播回调，不准，要知道连不连成功的判断方法是检查 onConnect 有没有执行。
 
 另外我们注意到某些设备在附近没有要连接的 Wifi 的情况下，会主动重新连接之前连接的 Wifi，此时也会走 CONNECT_FINISH 回调，同时 onConnect 也会执行，这种问题的解决方法是判断：
 ```
