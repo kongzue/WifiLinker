@@ -73,7 +73,7 @@ wifiUtil = new WifiUtil(this);
 
 ### 查找
 
-1) 查找附近 Wifi
+1) 查找附近 Wifi（不推荐，部分国产系统对此功能做了限制，建议参考《连接》章节的“对于已知类型的Wifi的连接方式”）
 ```
 wifiUtil.scan(new OnWifiScanListener() {
     @Override
