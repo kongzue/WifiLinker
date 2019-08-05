@@ -6,15 +6,15 @@ def siteUrl = 'https://github.com/kongzue/WifiLinker' //项目在github主页地
 def gitUrl = 'https://github.com/kongzue/WifiLinker.git'   //Git仓库的地址
 
 group = "com.kongzue.smart"//发布aar前缀根节点
-version = "1.0.2"//发布aar的库版本
+version = "1.0.3"//发布aar的库版本
 android {
     compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
     }
 
     buildTypes {

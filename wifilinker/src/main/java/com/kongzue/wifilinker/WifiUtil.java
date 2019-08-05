@@ -5,11 +5,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ import com.kongzue.wifilinker.util.WifiInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static android.content.Context.WIFI_SERVICE;
 
 /**
  * @author: Kongzue
@@ -60,7 +64,7 @@ public class WifiUtil {
     public WifiUtil(Activity context) {
         this.context = context;
         
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
         mWifiAutoConnectManager = WifiAutoConnectManager.newInstance(wifiManager);
         
         init();
@@ -134,11 +138,29 @@ public class WifiUtil {
             log("阻塞");
         } else if (state == NetworkInfo.DetailedState.CONNECTED) {
             log("连接成功");
+            
+            String linkedWifiSSID;
+            //通过以下方法获取连接的Wifi的真实SSID：
+            //因部分手机系统限制，直接获取SSID可能是“unknow ssid”，此方法原理是通过获取已连接的Wifi的网络ID，然后去已保存的Wifi信息库中查找相同的网络ID的wifi信息的SSID
+            WifiManager my_wifiManager = ((WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE));
+            assert my_wifiManager != null;
+            android.net.wifi.WifiInfo wifiInfo = my_wifiManager.getConnectionInfo();
+            linkedWifiSSID = wifiInfo.getSSID();
+            int networkId = wifiInfo.getNetworkId();
+            List<WifiConfiguration> configuredNetworks = my_wifiManager.getConfiguredNetworks();
+            for (WifiConfiguration wifiConfiguration : configuredNetworks) {
+                if (wifiConfiguration.networkId == networkId) {
+                    linkedWifiSSID = wifiConfiguration.SSID;
+                    break;
+                }
+            }
+            
             if (!isConnected) {
                 if (onWifiConnectStatusChangeListener != null) {
                     onWifiConnectStatusChangeListener.onStatusChange(true, CONNECT_FINISH);
+                    
                     onWifiConnectStatusChangeListener.onConnect(new WifiInfo(
-                            WifiAutoConnectManager.getSSID(),
+                            linkedWifiSSID,
                             WifiAutoConnectManager.getIpAddress(),
                             WifiAutoConnectManager.getMacAddress(),
                             WifiAutoConnectManager.getGateway()
@@ -198,6 +220,7 @@ public class WifiUtil {
             error("此连接方式需要先进行查找");
             return;
         }
+        log("准备连接：" + ssid + " 密码：" + password);
         this.ssid = ssid;
         this.password = password;
         onWifiConnectStatusChangeListener = listener;
@@ -222,6 +245,7 @@ public class WifiUtil {
         isConnected = false;
         this.ssid = ssid;
         this.password = password;
+        log("准备连接：" + ssid + " 密码：" + password);
         type = wifiCipherType;
         onWifiConnectStatusChangeListener = listener;
         

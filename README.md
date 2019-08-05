@@ -2,10 +2,10 @@
 Wifi连接封装库，适用于智能硬件Wifi通讯。
 
 <a href="https://github.com/kongzue/WifiLinker/">
-<img src="https://img.shields.io/badge/WifiLinker-1.0.2-green.svg" alt="Kongzue WifiLinker">
+<img src="https://img.shields.io/badge/WifiLinker-1.0.3-green.svg" alt="Kongzue WifiLinker">
 </a>
 <a href="https://bintray.com/myzchh/maven/WifiLinker">
-<img src="https://img.shields.io/badge/Maven-1.0.2-blue.svg" alt="Maven">
+<img src="https://img.shields.io/badge/Maven-1.0.3-blue.svg" alt="Maven">
 </a>
 <a href="http://www.apache.org/licenses/LICENSE-2.0">
 <img src="https://img.shields.io/badge/License-Apache%202.0-red.svg" alt="License">
@@ -27,14 +27,14 @@ Maven仓库：
 <dependency>
   <groupId>com.kongzue.smart</groupId>
   <artifactId>wifilinker</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <type>pom</type>
 </dependency>
 ```
 Gradle：
 在dependencies{}中添加引用：
 ```
-implementation 'com.kongzue.smart:wifilinker:1.0.2'
+implementation 'com.kongzue.smart:wifilinker:1.0.3'
 ```
 
 ## 关于权限
@@ -120,9 +120,23 @@ wifiUtil.link(ssid, password, new OnWifiConnectStatusChangeListener() {
     @Override
     public void onConnect(WifiInfo wifiInfo) {
         //连接完成后获取 Wifi 信息
+        
     }
 });
 ```
+⚠ 警告！此处请勿以 statusCode 状态为主进行判断，因为这个吃的是系统广播回调，不准，要知道连不连成功的判断方法是检查 onConnect 有没有执行。
+
+另外我们注意到某些设备在附近没有要连接的 Wifi 的情况下，会主动重新连接之前连接的 Wifi，此时也会走 CONNECT_FINISH 回调，同时 onConnect 也会执行，这种问题的解决方法是判断：
+```
+@Override
+public void onConnect(WifiInfo wifiInfo) {
+    //连接完成后获取 Wifi 信息
+    if (wifiInfo.getName().contains(你连接的Wifi的SSID)){      //用contains方法判断的原因是wifiInfo.getName()可能是加了引号的WifiSSID
+        //差不多是真的连接成功了
+    }
+}
+```
+因部分设备限制，wifiInfo.getName() 获取的值可能是 “unknow ssid”这个问题已经在新版本中解决了，方案是通过 networkId 去已存储的Wifi信息列表中找到对应的 Wifi 信息获取其 SSID 是正确的 SSID。
 
 对于已知类型的 Wifi，使用以下连接方式：
 ```

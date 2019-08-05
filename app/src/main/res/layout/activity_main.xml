@@ -16,12 +16,14 @@
         android:id="@+id/edit_ssid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="NETGEAR86-5G"
         android:hint="请输入Wifi名称（SSID）"/>
 
     <EditText
         android:id="@+id/edit_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="chuizihaokan2017"
         android:hint="请输入Wifi密码（无密码请忽略）"/>
 
     <Button
