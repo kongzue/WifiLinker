@@ -2,10 +2,10 @@
 Wifi连接封装库，适用于智能硬件Wifi通讯。
 
 <a href="https://github.com/kongzue/WifiLinker/">
-<img src="https://img.shields.io/badge/WifiLinker-1.0.3-green.svg" alt="Kongzue WifiLinker">
+<img src="https://img.shields.io/badge/WifiLinker-1.0.4-green.svg" alt="Kongzue WifiLinker">
 </a>
 <a href="https://bintray.com/myzchh/maven/WifiLinker">
-<img src="https://img.shields.io/badge/Maven-1.0.3-blue.svg" alt="Maven">
+<img src="https://img.shields.io/badge/Maven-1.0.4-blue.svg" alt="Maven">
 </a>
 <a href="http://www.apache.org/licenses/LICENSE-2.0">
 <img src="https://img.shields.io/badge/License-Apache%202.0-red.svg" alt="License">
@@ -27,14 +27,14 @@ Maven仓库：
 <dependency>
   <groupId>com.kongzue.smart</groupId>
   <artifactId>wifilinker</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <type>pom</type>
 </dependency>
 ```
 Gradle：
 在dependencies{}中添加引用：
 ```
-implementation 'com.kongzue.smart:wifilinker:1.0.3'
+implementation 'com.kongzue.smart:wifilinker:1.0.4'
 ```
 
 ## 关于权限
@@ -221,6 +221,9 @@ limitations under the License.
 核心方法感谢 @lakebobo 的开源贡献：https://blog.csdn.net/lakebobo/article/details/79581211
 
 ## 更新日志
+v1.0.4：
+- 增加延时 1 秒后再返回 onConnect 以保证获取的 SSID 是正确的；
+
 v1.0.3：
 - 解决连接 Wifi 成功状态判断问题；
 

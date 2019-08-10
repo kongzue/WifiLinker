@@ -12,6 +12,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,34 +139,29 @@ public class WifiUtil {
             log("阻塞");
         } else if (state == NetworkInfo.DetailedState.CONNECTED) {
             log("连接成功");
-            
-            String linkedWifiSSID;
-            //通过以下方法获取连接的Wifi的真实SSID：
-            //因部分手机系统限制，直接获取SSID可能是“unknow ssid”，此方法原理是通过获取已连接的Wifi的网络ID，然后去已保存的Wifi信息库中查找相同的网络ID的wifi信息的SSID
-            WifiManager my_wifiManager = ((WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE));
-            assert my_wifiManager != null;
-            android.net.wifi.WifiInfo wifiInfo = my_wifiManager.getConnectionInfo();
-            linkedWifiSSID = wifiInfo.getSSID();
-            int networkId = wifiInfo.getNetworkId();
-            List<WifiConfiguration> configuredNetworks = my_wifiManager.getConfiguredNetworks();
-            for (WifiConfiguration wifiConfiguration : configuredNetworks) {
-                if (wifiConfiguration.networkId == networkId) {
-                    linkedWifiSSID = wifiConfiguration.SSID;
-                    break;
-                }
-            }
-            
+    
             if (!isConnected) {
-                if (onWifiConnectStatusChangeListener != null) {
-                    onWifiConnectStatusChangeListener.onStatusChange(true, CONNECT_FINISH);
-                    
-                    onWifiConnectStatusChangeListener.onConnect(new WifiInfo(
-                            linkedWifiSSID,
-                            WifiAutoConnectManager.getIpAddress(),
-                            WifiAutoConnectManager.getMacAddress(),
-                            WifiAutoConnectManager.getGateway()
-                    ));
-                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //延迟一秒
+                        context.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (onWifiConnectStatusChangeListener != null) {
+                                    onWifiConnectStatusChangeListener.onStatusChange(true, CONNECT_FINISH);
+        
+                                    onWifiConnectStatusChangeListener.onConnect(new WifiInfo(
+                                            getNowLinkedWifiSSID(),
+                                            WifiAutoConnectManager.getIpAddress(),
+                                            WifiAutoConnectManager.getMacAddress(),
+                                            WifiAutoConnectManager.getGateway()
+                                    ));
+                                }
+                            }
+                        });
+                    }
+                },1000);
                 isConnected = true;
             }
             isLinked = true;
@@ -196,6 +192,25 @@ public class WifiUtil {
         } else if (state == NetworkInfo.DetailedState.SUSPENDED) {
         
         }
+    }
+    
+    public String getNowLinkedWifiSSID(){
+        String linkedWifiSSID;
+        //通过以下方法获取连接的Wifi的真实SSID：
+        //因部分手机系统限制，直接获取SSID可能是“unknow ssid”，此方法原理是通过获取已连接的Wifi的网络ID，然后去已保存的Wifi信息库中查找相同的网络ID的wifi信息的SSID
+        WifiManager my_wifiManager = ((WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE));
+        assert my_wifiManager != null;
+        android.net.wifi.WifiInfo wifiInfo = my_wifiManager.getConnectionInfo();
+        linkedWifiSSID = wifiInfo.getSSID();
+        int networkId = wifiInfo.getNetworkId();
+        List<WifiConfiguration> configuredNetworks = my_wifiManager.getConfiguredNetworks();
+        for (WifiConfiguration wifiConfiguration : configuredNetworks) {
+            if (wifiConfiguration.networkId == networkId) {
+                linkedWifiSSID = wifiConfiguration.SSID;
+                break;
+            }
+        }
+        return linkedWifiSSID;
     }
     
     public void close() {
