@@ -14,7 +14,7 @@ Wifi连接封装库，适用于智能硬件Wifi通讯。
 <img src="https://img.shields.io/badge/Homepage-Kongzue.com-brightgreen.svg" alt="Homepage">
 </a>
 
-Demo下载：<https://fir.im/WifiLinker>
+Demo下载：<http://beta.kongzue.com/WifiLinker>
 
 ## 前言
 
